@@ -1,9 +1,10 @@
 package com.fyc.boot.controller;
 
+import com.fyc.boot.configurations.ExternalizedConfigurations;
 import com.fyc.boot.domain.Product;
 import com.fyc.boot.service.ProductService;
-import com.fyc.boot.service.ProductsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,18 +13,27 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/productos")
 public class ProductController {
 
     //ProductService ps = new ProductsServiceImpl();
-
+    //inyeccion de dependencias
     @Autowired
+    //@Qualifier("listResourcesService")
     private ProductService ps;
+
+
+    //inyeccion de dependencia de configuracion
+    @Autowired
+    private ExternalizedConfigurations externalizedConfigurations;
 
     //Traemos lor productos que tenemos en la lista
     @GetMapping
     public ResponseEntity<?> getAllProducts(){
+
+        System.out.println(externalizedConfigurations.toString());
         List<Product> products = ps.getProducts();
 
         return ResponseEntity.ok(products);
@@ -39,7 +49,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto con el ID("+ id +") no ha sido encontrado.");
     }
 
-    //Creamis un nuevo producto
+    //Creamos un nuevo producto
     @PostMapping
     public ResponseEntity<?> postProduct(@RequestBody Product producto){
 

@@ -1,13 +1,20 @@
 package com.fyc.boot.service;
 
 import com.fyc.boot.domain.Product;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+
+//@Service("listResourcesService")
 @Service
+@ConditionalOnProperty(name = "service.products", havingValue = "list")
 public class ProductsServiceImpl implements ProductService {
 
     List<Product> products = new ArrayList<>(Arrays.asList(
